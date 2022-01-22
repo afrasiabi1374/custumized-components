@@ -1,8 +1,8 @@
 <template>
   <div>
       type of countries 
+      <Pagination :count="15" :totalvisible="7" route_param="blog-blog" />
       <nuxt-child></nuxt-child>
-      <Pagination :count="10" route_param="blog-blog" />
   </div>
 </template>
 

@@ -34,7 +34,9 @@ export default {
             return this.$axios
             .$get('https://restcountries.com/v3.1/all')
             .then((res)=>{
-                this.list = res.slice(((Math.floor(res.length/this.$route.query.count))*(this.$route.params.blog-1)),Math.floor(((res.length/this.$route.query.count)*(this.$route.params.blog-1)) + (res.length/this.$route.query.count)))
+                this.list = res.slice(((Math.floor(res.length/this.$route.query.count))*(this.$route.params.blog-1)),((Math.floor(res.length/this.$route.query.count))*(this.$route.params.blog-1)) + Math.ceil(res.length/this.$route.query.count))
+                console.log('lennnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn from',(Math.floor(res.length/this.$route.query.count))*(this.$route.params.blog-1));
+                console.log('lennnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn to',((Math.floor(res.length/this.$route.query.count))*(this.$route.params.blog-1)) + Math.floor(res.length/this.$route.query.count));
                 this.loading--
             })
             .catch((e)=>{

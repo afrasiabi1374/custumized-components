@@ -1,7 +1,7 @@
 <template>
   <div>
     <h3>
-      <nuxt-link :to="{name: 'blog-blog' , params:{blog:1}, query:{count: 10, route_param: 'blog-blog'} }" >blogs</nuxt-link>
+      <nuxt-link :to="{name: 'blog-blog' , params:{blog:1}, query:{count: 15, route_param: 'blog-blog'} }" >blogs</nuxt-link>
     </h3>
   </div>
 </template>
