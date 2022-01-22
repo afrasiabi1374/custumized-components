@@ -2,8 +2,7 @@
   <div class="paginate-wrapper">
     <nuxt-link    :class="['prev', $route.params.blog <= $route.query.count ? 'disable' : '']" :to="{name: route_param , params:{blog:($route.params.blog)-1}, query:{count: count, route_param: route_param} }" >prev</nuxt-link>
     <template v-for="(item, i) in count">
-      <div v-if="item===1" :key="i">...</div>
-      <nuxt-link :to="{name: route_param , params:{blog:item}, query:{count: count, route_param: route_param} }" :key="i">{{ item }}</nuxt-link>
+git      <nuxt-link :to="{name: route_param , params:{blog:item}, query:{count: count, route_param: route_param} }" :key="i">{{ item }}</nuxt-link>
     </template>
     <nuxt-link  :class="['next', $route.params.blog >= $route.query.count ? 'disable' : '']" :to="{name: route_param , params:{blog:($route.params.blog)+1}, query:{count: count, route_param: route_param} }" >next</nuxt-link>
     {{ disPrev }}
