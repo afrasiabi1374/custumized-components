@@ -1,70 +1,96 @@
 <template>
-  <div class="paginate-wrapper">
-    <nuxt-link    :class="['prev', $route.params.blog <= $route.query.count ? 'disable' : '']" :to="{name: route_param , params:{blog:($route.params.blog)-1}, query:{count: count, route_param: route_param} }" >prev</nuxt-link>
-    <template v-for="(item, i) in calcPaginate">
-     <nuxt-link :class="[ item === '...' ? 'disable' : '']" :to="{name: route_param , params:{blog:item}, query:{count: count, route_param: route_param} }" :key="i">{{ item }}</nuxt-link>
+  <div class="pagination-wrapper">
+    <nuxt-link class="pagination-link-prev" :class="[value <= 1?'disable':'']"  :to="page+(value - 1)" @click.native="prev">Prev</nuxt-link>
+    <template v-for="(item, i) in compPaginate">
+      <nuxt-link @click.native="$emit('input', item)" v-if="item !== '...'" class="pagination-link" :to="page+(item)"  :key="'btn'+item">{{ item }}</nuxt-link>
+      <span v-if="item === '...'" :key="'dot'+i" class="pagination-link">...</span>
     </template>
-    <nuxt-link  :class="['next', $route.params.blog >= $route.query.count ? 'disable' : '']" :to="{name: route_param , params:{blog:($route.params.blog)+1}, query:{count: count, route_param: route_param} }" >next</nuxt-link>
-    {{ calcPaginate }}
+    <nuxt-link class="pagination-link-next" :class="[value >= length ?'disable':'']" :to="page+(value + 1)"  @click.native="$emit('input', value + 1)">Next</nuxt-link>
   </div>
 </template>
 
 <script>
 export default {
-    name:'PaginateCMP',
-    props:{
-      count:{
-          default: 3,
-          type: Number
-      },
-    route_param: {
-      default: null,
-      type: String
-    }
-  },
+  props:['value','length','page'],
   data(){
-    return{
-      disPrev: false,
-      disNext: false
+    return {
+      totalVisible: 10,
+      disable: false
     }
   },
   computed:{
-    calcPaginate(){
-      let initPaginate = []
-      for (let i = 0; i < this.count; i++) {
-        
-        initPaginate.push(i+1) 
-
+    compPaginate(){
+      let pagination = []
+      for (let i = 1; i <= this.totalVisible; i++) {
+        pagination.push(i)
       }
-      return  initPaginate
-
+      if (this.length > this.totalVisible) {
+        pagination[pagination.length-1] = this.length
+        pagination[pagination.length-2] = '...'
+      }
+      if ((this.value >= 5) && (this.value < this.length-4 )) {
+        pagination[1] = '...'
+        pagination[2] = this.value - 2
+        pagination[3] = this.value - 1
+        pagination[4] = this.value
+        pagination[5] = this.value + 1
+        pagination[6] = this.value + 2
+        pagination[7] = this.value + 3
+      }
+      if ((this.value >= this.length-4 )) {
+        pagination[0] = 1
+        pagination[1] = '...'
+        pagination[pagination.length-2] = this.length-1
+        for (let i = 2; i < 8; i++) {
+          pagination[i] = (this.length-9)+i
+        }
+      }
+      return pagination
+    }
+  },
+  methods:{
+    prev(){
+      if (this.value >= 1) {
+        this.$emit('input', this.value - 1)
+      }
+    },
+    next(){
+      if (this.value <= length) {
+        this.$emit('input', this.value + 1)
+      }
     }
   }
-  }
-
+}
 </script>
 
-<style scoped>
-    .paginate-wrapper {
-        display: flex;
-        gap: 1%;
-        justify-content: center;
-    }
-    a{
-      text-decoration: none;
-      background-color: cadetblue;
-      color: white;
-      width: 30px;
-      height: 30px;
-      border-radius: 10px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-    .router-link-active{
-      background-color: brown;
-    }
-    /* .disable{
-      pointer-events: none;
-    } */
+<style>
+  .pagination-wrapper{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+  }
+  .pagination-link,.pagination-link-prev,.pagination-link-next{
+    text-decoration: none;
+    background-color: transparent;
+    color: black;
+    padding: 10px;
+    border-radius: 5px;
+  }
+  .pagination-link:hover{
+    background-color: rgb(173, 173, 173);
+    color: black;
+    transition: all .2s;
+  }
+  .nuxt-link-exact-active{
+    background-color: rgb(204, 204, 204);
+    color: black;
+    transition: all .7s;
+  }
+  .nuxt-link{
+    transition: all .7s;
+  }
+  .disable{
+    pointer-events: none;
+  }
 </style>

@@ -1,6 +1,6 @@
 <template>
   <div>
-    {{ $route.params }}
+    param : {{ $route.params }}ccdfd
   </div>
 </template>
 

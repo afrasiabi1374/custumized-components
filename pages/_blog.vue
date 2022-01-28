@@ -1,17 +1,21 @@
 <template>
   <div>
-      type of countries 
-      <Pagination :count="15" :totalvisible="7" route_param="blog-blog" />
-      <nuxt-child></nuxt-child>
+    <nuxt-child></nuxt-child>
+    <Pagination page="/blog/page/" :length="length"  v-model="page"/>
+    
   </div>
 </template>
-
 <script>
-import Pagination from '~/components/Pagination.vue'
+import Pagination from '~/components/Pagination'
 export default {
-    components: {
-        Pagination
+  name: 'IndexPage',
+  components: { Pagination },
+  data(){
+    return {
+      length: 113,
+      page:1
     }
+  }
 }
 </script>
 
