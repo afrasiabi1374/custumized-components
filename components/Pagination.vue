@@ -1,6 +1,6 @@
 <template>
   <div class="pagination-wrapper">
-    <nuxt-link class="pagination-link-prev" :class="[value <= 1?'disable':'']"  :to="page+(value - 1)" @click.native="prev">Prev</nuxt-link>
+    <nuxt-link  class="pagination-link-prev"  :class="[value <= 1?'disable':'']"  :to="page+(value - 1)" @click.native="prev">Prev</nuxt-link>
     <template v-for="(item, i) in compPaginate">
       <nuxt-link @click.native="$emit('input', item)" v-if="item !== '...'" class="pagination-link" :to="page+(item)"  :key="'btn'+item">{{ item }}</nuxt-link>
       <span v-if="item === '...'" :key="'dot'+i" class="pagination-link">...</span>
@@ -8,10 +8,21 @@
     <nuxt-link class="pagination-link-next" :class="[value >= length ?'disable':'']" :to="page+(value + 1)"  @click.native="$emit('input', value + 1)">Next</nuxt-link>
   </div>
 </template>
-
 <script>
 export default {
-  props:['value','length','page'],
+  props:{
+    value:{
+      type:Number,
+      default:1,
+    },
+    length:{
+      type:Number,
+    },
+    page:{
+      type:String,
+    },
+
+  },
   data(){
     return {
       totalVisible: 10,
