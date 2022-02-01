@@ -1,15 +1,17 @@
 <template>
   <div class="pagination-wrapper">
+    <h1>LEN + {{ length }}</h1>
     <nuxt-link  class="pagination-link-prev"  :class="[value <= 1?'disable':'']"  :to="page+(value - 1)" @click.native="prev">Prev</nuxt-link>
     <template v-for="(item, i) in compPaginate">
       <nuxt-link @click.native="$emit('input', item)" v-if="item !== '...'" class="pagination-link" :to="page+(item)"  :key="'btn'+item">{{ item }}</nuxt-link>
       <span v-if="item === '...'" :key="'dot'+i" class="pagination-link">...</span>
     </template>
-    <nuxt-link class="pagination-link-next" :class="[value >= length ?'disable':'']" :to="page+(value + 1)"  @click.native="$emit('input', value + 1)">Next</nuxt-link>
+    <nuxt-link  class="pagination-link-next" :class="[value >= length ?'disable':'']" :to="page+(value + 1)"  @click.native="$emit('input', value + 1)">Next</nuxt-link>
   </div>
 </template>
 <script>
 export default {
+  
   props:{
     value:{
       type:Number,
@@ -23,6 +25,7 @@ export default {
     },
 
   },
+
   data(){
     return {
       totalVisible: 10,
@@ -30,7 +33,7 @@ export default {
     }
   },
   computed:{
-    compPaginate(){
+     compPaginate(){
       let pagination = []
       for (let i = 1; i <= this.totalVisible; i++) {
         pagination.push(i)
@@ -53,23 +56,24 @@ export default {
         pagination[1] = '...'
         pagination[pagination.length-2] = this.length-1
         for (let i = 2; i < 8; i++) {
-          pagination[i] = (this.length-9)+i
+          pagination[i] =  (this.length-9)+i
         }
       }
-      return pagination
+      return  pagination
     }
   },
   methods:{
-    prev(){
+    async prev(){
       if (this.value >= 1) {
-        this.$emit('input', this.value - 1)
+         this.$emit('input', await this.value - 1)
       }
     },
     next(){
       if (this.value <= length) {
         this.$emit('input', this.value + 1)
       }
-    }
+    },
+    
   }
 }
 </script>

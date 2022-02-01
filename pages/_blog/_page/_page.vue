@@ -1,10 +1,10 @@
 <template>
   <div class="container">
-    <Pagination page="/blog/page/" :length="23"  v-model="page"/>
-    <h1>country lenght =>{{ list.length }}</h1>
+    <h1> page =>{{ typeof page   }}</h1>
+    <Pagination page="/blog/page/" :length="compLength"  v-model="page"/>
     <h3 v-if="loading">loading...</h3>
     <div v-else class="flags" >
-      <template v-for="(item, i) in list">
+      <template v-for="(item, i) in compList">
         <div class="card" :key="'country' + i">
           <p>{{ item.name.common + (i+1)}}</p>
           <img :src="item.flags.png" width="100%" height="60%" draggable="false" alt="">
@@ -17,37 +17,28 @@
 import Pagination from '~/components/Pagination'
 export default {
   components: { Pagination },
-  fetch(){
-    return this.service()
-  },
   data(){
     return{
-      list : [],
-      loading: false,
-      length: '',
       page: Number(this.$route.params.page)
     }
   },
-  methods:{
-    service(){
-      this.loading = true
-      return this.$axios
-      .$get('https://restcountries.com/v3.1/all')
-      .then((res)=>{
-        this.list = res
+    async asyncData({$axios}){
+        const list = await $axios.$get('https://restcountries.com/v3.1/all')
+        return {
+          list: list,
+
+        }
+    },
+    computed:{
+      compLength(){
         let len = this.list.length
         let twelveTwelve = Math.ceil(len/12)
-        this.length = twelveTwelve
-        this.list = this.list.slice((this.$route.params.page-1)*12,(this.$route.params.page*12))
-        this.loading = false
-      })
-      .catch((e)=>{
-        console.log('err from fetch',e)
-        this.loading = false
-      })
+        return twelveTwelve
+      },
+      compList(){
+        return this.list.slice((this.$route.params.page-1)*12,(this.$route.params.page*12))
+      }
     }
-  }
-
 }
 </script>
 
