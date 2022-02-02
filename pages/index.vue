@@ -1,6 +1,8 @@
 <template>
   <div>
     <nuxt-link to="/blog/page/1">Blog</nuxt-link>
+    <br><br><br>
+    <nuxt-link to="/sassTraining">sassTraining</nuxt-link>
   </div>
 </template>
 
